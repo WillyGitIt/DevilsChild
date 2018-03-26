@@ -1,9 +1,9 @@
 #include <Arduino.h>
-#include <Wire.h> //ibrary allows you to communicate with I2C / TWI devices, may not be needed in here?
+#include <Wire.h> //library allows you to communicate with I2C / TWI devices
 #include <FaBo9Axis_MPU9250.h>
 
 #define delayAmount 500
-
+#define num_readings 50
 
 FaBo9Axis fabo_9axis;
 
@@ -18,40 +18,38 @@ void set_last_read_data(unsigned long time, float z_gyro) {
   gyro_z_angle = z_gyro;
 }
 
-
-void setup() {
+void mpu_setup() {
   Serial.begin(9600);                   //Sets the data rate in bits per second (baud) for serial data transmission
-  Serial.println("RESET");
-  Serial.println();
+  // Serial.println("RESET");
+  // Serial.println();
 
-  Serial.println("configuring device.");
+  // Serial.println("configuring device.");
 
   if (fabo_9axis.begin()) {
-    Serial.println("configured FaBo 9Axis I2C Brick");
+    // Serial.println("configured FaBo 9Axis I2C Brick");
   } else {
-    Serial.println("device error");
+    Serial.println("mpu device error");
     while(1);
   }
 
   //calibration
-  int num_readings = 50;
   float gyro_z = 0;
     
   for (int i = 0; i < num_readings; i++) {  //read in the first 50 values from the MPu and average them 
     float cgx,cgy,cgz;
     fabo_9axis.readGyroXYZ(&cgx,&cgy,&cgz);
     gyro_z += cgz;
-    Serial.print(cgz);
-    Serial.print(",");
+    // Serial.print(cgz);
+    // Serial.print(",");
     delay(5); //delay so the MPUu has time to get the next value
   }
   gyro_z /= num_readings; //calc the average
   gyro_offset = gyro_z; //store in the global offset variable
-  Serial.print("Offset is ");
-  Serial.println(gyro_offset);
+  // Serial.print("Offset is ");
+  // Serial.println(gyro_offset);
 }
 
-void loop() {
+void get_angle(float * angle) {
   unsigned long t_now = millis(); //stores the time the readings were taken  
   
   //declaring variables for all the data
@@ -65,11 +63,12 @@ void loop() {
   float dt = (t_now - last_read_time)/1000.0; //calculates the time since the last reading, in seconds 
   gyro_z_angle = gyro_corrected*dt + gyro_z_angle;
 
-  Serial.print(dt);
-  Serial.print(",");
-  Serial.println(gyro_z_angle);
-
+  // Serial.print(dt);
+  // Serial.print(",");
+  // Serial.println(gyro_z_angle);
+  
+  *angle = gyro_z_angle;
   set_last_read_data(t_now, gyro_z_angle);
 
-  delay(delayAmount);  //delay the loop 500 ms to see it on serial monitor
+  delay(delayAmount);  //delay the loop 500 ms to see it on serial monitor, maybe remove this from the final function code?
 }

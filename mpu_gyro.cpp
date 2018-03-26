@@ -1,24 +1,24 @@
-#include <Arduino.h>
 #include <Wire.h> //library allows you to communicate with I2C / TWI devices
 #include <FaBo9Axis_MPU9250.h>
+#include <Arduino.h>
+#include "mpu_gyro.h"
 
 #define delayAmount 500
 #define num_readings 50
 
-FaBo9Axis fabo_9axis;
+//constructor
+MPU::MPU(){
+  //FaBo9Axis fabo_9axis;
+}
 
-//variables to hold gyroscope calc values
-float gyro_offset;
-float gyro_z_angle;
-float angle = 0.00;       // value to hold final calculated gyro angle
-unsigned long last_read_time; //to help compute the time over which the integrationg is calculated
 
-void set_last_read_data(unsigned long time, float z_gyro) {
+void MPU::set_last_read_data(unsigned long time, float z_gyro) {
   last_read_time = time;
   gyro_z_angle = z_gyro;
 }
 
-void mpu_setup() {
+void MPU::mpu_setup() {
+  FaBo9Axis fabo_9axis;
   Serial.begin(9600);                   //Sets the data rate in bits per second (baud) for serial data transmission
   // Serial.println("RESET");
   // Serial.println();
@@ -49,9 +49,9 @@ void mpu_setup() {
   // Serial.println(gyro_offset);
 }
 
-void get_angle(float * angle) {
+void MPU::get_angle(float * angle) {
   unsigned long t_now = millis(); //stores the time the readings were taken  
-  
+  FaBo9Axis fabo_9axis;
   //declaring variables for all the data
   float ax,ay,az;
   float gx,gy,gz;  

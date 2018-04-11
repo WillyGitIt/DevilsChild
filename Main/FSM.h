@@ -7,6 +7,8 @@ enum STATE {
 
   RUNNING,
 
+  FIRE,
+
   STOPPED
 
 };
@@ -16,8 +18,8 @@ STATE initialising();
 
 STATE running();
 
+STATE fire();
+
 STATE stopped();
-
-
 
 #endif

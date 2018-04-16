@@ -18,6 +18,9 @@ void loop() {
     case RUNNING:
       machine_state =  running();
       break;
+    case FIRE:
+      machine_state = fire();
+      break;
     case STOPPED:
       machine_state =  stopped();
       break;

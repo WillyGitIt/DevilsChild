@@ -180,3 +180,112 @@ void mclass::strafe_right ()
 
 mclass motor = mclass();
 
+
+        Serial1.println("Strafe Right");
+        break;
+      case 'a'://Turn Right
+      case 'A':
+        ccw();
+        Serial1.println("ccw");
+        break;
+      case 'd'://Turn Right
+      case 'D':
+        cw();
+        Serial1.println("cw");
+        break;
+      case '-'://Turn Right
+      case '_':
+        speed_change = -100;
+        Serial1.println("-100");
+        break;
+      case '=':
+      case '+':
+        speed_change = 100;
+        Serial1.println("+");
+        break;
+      default:
+        stop();
+        Serial1.println("stop");
+        break;
+    }
+  }
+}
+
+void mclass::disable_motors()
+{
+  left_font_motor.detach();  // detach the servo on pin left_front to the servo object
+  left_rear_motor.detach();  // detach the servo on pin left_rear to the servo object
+  right_rear_motor.detach();  // detach the servo on pin right_rear to the servo object
+  right_font_motor.detach();  // detach the servo on pin right_front to the servo object
+
+  pinMode(left_front, INPUT);
+  pinMode(left_rear, INPUT);
+  pinMode(right_rear, INPUT);
+  pinMode(right_front, INPUT);
+}
+
+void mclass::enable_motors()
+{
+  left_font_motor.attach(left_front);  // attaches the servo on pin left_front to the servo object
+  left_rear_motor.attach(left_rear);  // attaches the servo on pin left_rear to the servo object
+  right_rear_motor.attach(right_rear);  // attaches the servo on pin right_rear to the servo object
+  right_font_motor.attach(right_front);  // attaches the servo on pin right_front to the servo object
+}
+void mclass::stop() //Stop
+{
+  left_font_motor.writeMicroseconds(1500);
+  left_rear_motor.writeMicroseconds(1500);
+  right_rear_motor.writeMicroseconds(1500);
+  right_font_motor.writeMicroseconds(1500);
+}
+
+void mclass::forward()
+{
+  left_font_motor.writeMicroseconds(1500 + speed_val);
+  left_rear_motor.writeMicroseconds(1500 + speed_val);
+  right_rear_motor.writeMicroseconds(1500 - speed_val);
+  right_font_motor.writeMicroseconds(1500 - speed_val);
+}
+
+void mclass::reverse ()
+{
+  left_font_motor.writeMicroseconds(1500 - speed_val);
+  left_rear_motor.writeMicroseconds(1500 - speed_val);
+  right_rear_motor.writeMicroseconds(1500 + speed_val);
+  right_font_motor.writeMicroseconds(1500 + speed_val);
+}
+
+void mclass::ccw ()
+{
+  left_font_motor.writeMicroseconds(1500 - speed_val);
+  left_rear_motor.writeMicroseconds(1500 - speed_val);
+  right_rear_motor.writeMicroseconds(1500 - speed_val);
+  right_font_motor.writeMicroseconds(1500 - speed_val);
+}
+
+void mclass::cw ()
+{
+  left_font_motor.writeMicroseconds(1500 + speed_val);
+  left_rear_motor.writeMicroseconds(1500 + speed_val);
+  right_rear_motor.writeMicroseconds(1500 + speed_val);
+  right_font_motor.writeMicroseconds(1500 + speed_val);
+}
+
+void mclass::strafe_left ()
+{
+  left_font_motor.writeMicroseconds(1500 - speed_val);
+  left_rear_motor.writeMicroseconds(1500 + speed_val);
+  right_rear_motor.writeMicroseconds(1500 + speed_val);
+  right_font_motor.writeMicroseconds(1500 - speed_val);
+}
+
+void mclass::strafe_right ()
+{
+  left_font_motor.writeMicroseconds(1500 + speed_val);
+  left_rear_motor.writeMicroseconds(1500 - speed_val);
+  right_rear_motor.writeMicroseconds(1500 - speed_val);
+  right_font_motor.writeMicroseconds(1500 + speed_val);
+}
+
+mclass motor = mclass();
+

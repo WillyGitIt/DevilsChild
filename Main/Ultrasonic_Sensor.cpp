@@ -1,19 +1,15 @@
 #include "Ultrasonic_Sensor.h"
-#include "main.h"
 #include "Arduino.h"
 #include <hcsr04.h>
 #include <Servo.h>
+#include "Settings.h"
 
 
 
-
-void setup(){
-    unsigned int TRIG_PIN = 12;
-    unsigned int ECHO_PIN = 13;
-    unsigned int SPINNYTHING_PIN = 14;
+void US_setup(){
     Servo spinnything; 
     spinnything.attach(SPINNYTHING_PIN); 
-    HCSR04 UltrasonicSensor(TRIG_PIN, ECHO_PIN, 20, 4000);
+    HCSR04 UltrasonicSensor(TRIG_PIN, ECHO_PIN, US_MinRange, US_MaxRange);
 }
 
 void UltraSonicScan () {
@@ -43,7 +39,12 @@ void UltraSonicScan () {
   }
 }
 
-
+int USmeasure(unsigned int degree)
+{
+  spinnything.write(degree);
+  delay(200);
+  return UltrasonicSensor.distanceInMillimeters();
+}
 
 
 

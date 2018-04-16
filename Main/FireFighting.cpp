@@ -1,14 +1,16 @@
 #include "Arduino.h"
 #include "FireFighting.h"
+#include "Settings.h"
+
+
 
 void FireDetection()
 {
-  motor.turnleft(90);
-  delay(500);
-  for (unsigned int i = 0; i <= 180; i++){
-    motor.turnright(1);
+  for (unsigned int i = 0; i <= 360; i++){
+    motor.turnright(3);
     if (phototrans()){
       FireExtinguish();
+      FireDetection();
       return;
     }
   }
@@ -16,8 +18,19 @@ void FireDetection()
 
 void FireExtinguish()
 {
-  fan.on();
+  fanON();
   while(phototrans()){}
-  fan.off();
+  delay(fanDELAY);
+  fanOFF();
 }
 
+void fanON()
+{
+  pinMode(fanPIN, OUTPUT);
+  digitalWrite(fanPIN,LOW);
+}
+
+void fanOFF()
+{
+  digitalWrite(fanPIN,HIGH);
+}

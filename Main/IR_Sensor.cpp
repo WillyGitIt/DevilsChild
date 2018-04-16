@@ -3,62 +3,79 @@
  code does not factor in encoders at this time*/
 
 #include "IR_Sensor.h"
-#include "main.h"
 #include "Arduino.h"
 
-void setup(SHARP type, int pin)
+typedef enum {
+  Medium_2Y0A21F21,
+  Medium_2Y0A21F44,
+  Short_2D120XF1Y,
+  Short_2D120XF1Z
+  
+//  SHARP_DX, //2D120X - SHORT
+//  SHARP_Ya, //2Y0A21 - MEDIUM
+//  SHARP_YA //2Y0A02 - LONG
+} SHARP;
+
+IR_Sensor::IR_Sensor(){
+}
+
+void IR_Sensor::SETUP(SHARP type, int pin)
 {
   SensorType = type;
   Sensorpin = pin;
 }
 
-float distance()
+float IR_Sensor::distance()
 {
   float dis_mm;  //distance in mm
-  
-  if (SensorType == SHARP 0) //Medium_2Y0A21F21 
-  {
-    dis_mm = (2697 * pow(analogRead(pin),-0.787))*10; 
+
+  switch(SensorType){
+
+    case Medium_2Y0A21F21:
+      
+      dis_mm = (2697 * pow(analogRead(Sensorpin),-0.787))*10; 
       if (dis_mm < 0.0)
         return 801;
-      if (dis_mm >= 0.0 && temp_dis <= 10.0)
+      if (dis_mm >= 0.0 && dis_mm <= 10.0)
         return 99;
       if (dis_mm > 80.0)
         return 801;
-    return dis_mm;
-    
-  }else if (SensorType == SHARP 1) //Medium_2Y0A21F44,
-  {
-    dis_mm = (2633.9 * pow(analogRead(pin),-0.788))*10; 
-      if (dis_mm < 0.0)
-        return 801;
-      if (dis_mm >= 0.0 && temp_dis <= 10.0)
-        return 99;
-      if (dis_mm > 80.0)
-        return 801;
-    return dis_mm;
-    
-  }else if (SensorType == SHARP 2)//Short_2D120XF1Y,
-  {
-     dis_mm = (2050.6 * pow(analogRead(pin),-0.924))*10; 
+      return dis_mm;
+      break;
+
+    case Medium_2Y0A21F44:
+
+      dis_mm = (2633.9 * pow(analogRead(Sensorpin),-0.788))*10; 
+        if (dis_mm < 0.0)
+          return 801;
+        if (dis_mm >= 0.0 && dis_mm <= 10.0)
+          return 99;
+        if (dis_mm > 80.0)
+          return 801;
+      return dis_mm;
+
+    case Short_2D120XF1Y:
+
+      dis_mm = (2050.6 * pow(analogRead(Sensorpin),-0.924))*10; 
+        if (dis_mm < 0.0)
+          return 301;
+        if (dis_mm >= 0.0 && dis_mm <= 4.0)
+          return 39;
+        if (dis_mm > 30.0)
+          return 301;
+      return dis_mm;
+
+    case Short_2D120XF1Z:
+      
+      dis_mm = (2559.3 * pow(analogRead(Sensorpin),-1.062))*10; 
       if (dis_mm < 0.0)
         return 301;
-      if (dis_mm >= 0.0 && temp_dis <= 4.0)
+      if (dis_mm >= 0.0 && dis_mm <= 4.0)
         return 39;
       if (dis_mm > 30.0)
         return 301;
     return dis_mm;
-    
-  }else if (SensorType == SHARP 3)//Short_2D120XF1Z
-  {
-     dis_mm = (2559.3 * pow(analogRead(pin),-1.062))*10; 
-      if (dis_mm < 0.0)
-        return 301;
-      if (dis_mm >= 0.0 && temp_dis <= 4.0)
-        return 39;
-      if (dis_mm > 30.0)
-        return 301;
-    return dis_mm;
+
   }
 }
 

@@ -16,7 +16,8 @@ STATE initialising() {
 
 STATE running() {
   move_it();   //
-
+  ObstacleDetect();
+  Navigate();
 
   fast_flash_double_LED_builtin();
   //range_and_speed_settings();

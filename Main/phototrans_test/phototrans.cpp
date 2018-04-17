@@ -15,7 +15,7 @@ void Phototrans::setup(int pinf5, int pinf3, int pinb5, int pinb3, float alpha) 
 }
 
 bool Phototrans::isFire() {
-    bool isFire;
+    bool isFire = true;
 
     float tf5 = analogRead(pinf5); // read analog input pin 15 with the 5mm
     float tf3 = analogRead(pinf3); // read analog input pin 14 with the 3mm
@@ -42,6 +42,7 @@ bool Phototrans::isFire() {
     {
         isFire = false;
     }
+    
 return isFire;  
 
 }

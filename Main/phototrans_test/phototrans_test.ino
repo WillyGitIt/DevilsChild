@@ -8,8 +8,8 @@ void setup() {
 }
 
 void loop() {
-  bool fireDetected = Phototrans.isFire();
-  if (fireDetected) {
+ 
+  if (Phototrans.isFire()) {
     Serial.println("FIRE");
   } else {
     Serial.println("no fire");

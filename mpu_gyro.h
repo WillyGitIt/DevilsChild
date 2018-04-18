@@ -15,6 +15,7 @@ class MPU {
         void get_y_accel(float * y_accel);
         void get_x_vel(float * x_vel);
         void get_y_vel(float * y_vel);
+        void reset_angle_reading();
     private:
         void set_last_read_data_gyro(unsigned long time, float z_gyro);
         void set_last_read_data_vel_x(unsigned long time, float vel_x);

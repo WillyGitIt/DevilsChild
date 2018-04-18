@@ -26,7 +26,7 @@ void MPU::set_last_read_data_vel_y(unsigned long time, float vel_y) {
 
 void MPU::mpu_setup() {
   FaBo9Axis fabo_9axis;
-  Serial.begin(9600);                   //Sets the data rate in bits per second (baud) for serial data transmission
+  //Serial.begin(9600);                   //Sets the data rate in bits per second (baud) for serial data transmission
   
   if (fabo_9axis.begin()) {
     // Serial.println("configured FaBo 9Axis I2C Brick");
@@ -126,6 +126,27 @@ void MPU::get_y_vel(float * y_vel) {
   set_last_read_data_vel_y(t_now_y_vel, velocity_y);
 }
 
+void MPU::reset_angle_reading() { //this function resets and recalibrates the angle
+   FaBo9Axis fabo_9axis;
+
+  //calibration for the gyroscope and accelerometer
+  float gyro_z = 0;
+  float gx,gy,gz;  
+    
+  for (int i = 0; i < num_readings; i++) {  //read in the first 50 values from the MPu and average them 
+    float cgx,cgy,cgz;
+    fabo_9axis.readGyroXYZ(&cgx,&cgy,&cgz);
+    gyro_z += cgz;
+    delay(1); //delay so the MPUu has time to get the next value
+  }
+  gyro_z /= num_readings; //calc the average
+  gyro_offset = gyro_z; //store in the global offset variable
+  gyro_z_angle = 0;
+  unsigned long t_now_reset = millis();
+  set_last_read_data_gyro(t_now_reset, gyro_z_angle);
+
+
+}
 
 
 

@@ -42,6 +42,21 @@ bool Phototrans::isFire() {
     {
         isFire = false;
     }
+
+    Serial.print(avgtf5); // prints the value read
+    Serial.print(", ");
+    Serial.print(avgtf3); // prints the value read
+    Serial.print(", ");
+    
+    Serial.print(avgtb5); // prints the value read
+    Serial.print(", ");
+    Serial.print(avgtb3); // prints the value read
+    
+    ////percentage differences
+    Serial.print(", ");
+    Serial.print(percent_diff_t5); // prints the value read
+    Serial.print(", ");
+    Serial.print(percent_diff_t3); // prints the value read
     
 return isFire;  
 

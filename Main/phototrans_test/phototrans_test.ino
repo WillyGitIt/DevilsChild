@@ -10,9 +10,9 @@ void setup() {
 void loop() {
  
   if (Phototrans.isFire()) {
-    Serial.println("FIRE");
+    Serial.println(" FIRE");
   } else {
-    Serial.println("no fire");
+    Serial.println(" no fire");
   }
 
   delay(500);  //delay the loop 500 ms 

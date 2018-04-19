@@ -5,6 +5,15 @@
 
 #define num_readings 50
 
+  FaBo9Axis fabo_9axis;
+  float gyro_z = 0;
+  float accel_x = 0;
+  float accel_y = 0;
+  float ax,ay,az;
+  float gx,gy,gz;  
+  float cgx,cgy,cgz;
+  float cax,cay,caz;
+ 
 //constructor
 MPU::MPU(){
 }
@@ -25,7 +34,7 @@ void MPU::set_last_read_data_vel_y(unsigned long time, float vel_y) {
 }
 
 void MPU::mpu_setup() {
-  FaBo9Axis fabo_9axis;
+  //FaBo9Axis fabo_9axis;
   //Serial.begin(9600);                   //Sets the data rate in bits per second (baud) for serial data transmission
   
   if (fabo_9axis.begin()) {
@@ -36,17 +45,17 @@ void MPU::mpu_setup() {
   }
 
   //calibration for the gyroscope and accelerometer
-  float gyro_z = 0;
+/*  float gyro_z = 0;
   float accel_x = 0;
   float accel_y = 0;
   float ax,ay,az;
-  float gx,gy,gz;  
+  float gx,gy,gz;  */
     
   for (int i = 0; i < num_readings; i++) {  //read in the first 50 values from the MPu and average them 
-    float cgx,cgy,cgz;
+  //  float cgx,cgy,cgz;
     fabo_9axis.readGyroXYZ(&cgx,&cgy,&cgz);
     gyro_z += cgz;
-    float cax,cay,caz;
+   // float cax,cay,caz;
     fabo_9axis.readAccelXYZ(&cax,&cay,&caz);
     accel_x += cax;
     accel_y += cay;
@@ -61,46 +70,49 @@ void MPU::mpu_setup() {
  
 }
 
-void MPU::get_angle(float * angle) {
+float MPU::get_angle() {
   unsigned long t_now = millis(); //stores the time the readings were taken  
-  FaBo9Axis fabo_9axis;
-  float gx,gy,gz;  
+  //FaBo9Axis fabo_9axis;
+  //float gx,gy,gz;  
   //read in the values  
   fabo_9axis.readGyroXYZ(&gx,&gy,&gz);
   
   float gyro_corrected = gz - gyro_offset;
   float dt = (t_now - last_read_time_gyro)/1000.0; //calculates the time since the last reading, in seconds 
   gyro_z_angle = gyro_corrected*dt + gyro_z_angle;
-
-  *angle = gyro_z_angle;
+  
   set_last_read_data_gyro(t_now, gyro_z_angle);
+
+  angle = gyro_z_angle;
+  return angle;
+
 }
 
 void MPU::get_angular_velocity(float * angular_velocity) {
-  FaBo9Axis fabo_9axis;
-  float gx,gy,gz;  
+  //FaBo9Axis fabo_9axis;
+  //float gx,gy,gz;  
   fabo_9axis.readGyroXYZ(&gx,&gy,&gz); 
   *angular_velocity = gz;
 }
 
 void MPU::get_x_accel(float * x_accel) {
-  FaBo9Axis fabo_9axis;
-  float ax,ay,az;
+  //FaBo9Axis fabo_9axis;
+ // float ax,ay,az;
   fabo_9axis.readAccelXYZ(&ax,&ay,&az);
   *x_accel = ax;
 }
 
 void MPU::get_y_accel(float * y_accel) {
-  FaBo9Axis fabo_9axis;
-    float ax,ay,az;
+  //FaBo9Axis fabo_9axis;
+   // float ax,ay,az;
   fabo_9axis.readAccelXYZ(&ax,&ay,&az);
   *y_accel = ay;
 }
 
 void MPU::get_x_vel(float * x_vel) {
   unsigned long t_now_x_vel = millis(); //stores the time the readings were taken  
-  FaBo9Axis fabo_9axis;
-  float ax,ay,az;
+  //FaBo9Axis fabo_9axis;
+ // float ax,ay,az;
   //read in the values
   fabo_9axis.readAccelXYZ(&ax,&ay,&az);
   
@@ -113,8 +125,8 @@ void MPU::get_x_vel(float * x_vel) {
 }
 void MPU::get_y_vel(float * y_vel) {
   unsigned long t_now_y_vel = millis(); //stores the time the readings were taken  
-  FaBo9Axis fabo_9axis;
-  float ax,ay,az;
+  //FaBo9Axis fabo_9axis;
+  //float ax,ay,az;
   //read in the values
   fabo_9axis.readAccelXYZ(&ax,&ay,&az);
   
@@ -127,21 +139,21 @@ void MPU::get_y_vel(float * y_vel) {
 }
 
 void MPU::reset_angle_reading() { //this function resets and recalibrates the angle
-   FaBo9Axis fabo_9axis;
+   //FaBo9Axis fabo_9axis;
 
   //calibration for the gyroscope and accelerometer
   float gyro_z = 0;
-  float gx,gy,gz;  
+ // float gx,gy,gz;  
     
   for (int i = 0; i < num_readings; i++) {  //read in the first 50 values from the MPu and average them 
-    float cgx,cgy,cgz;
+   // float cgx,cgy,cgz;
     fabo_9axis.readGyroXYZ(&cgx,&cgy,&cgz);
     gyro_z += cgz;
     delay(1); //delay so the MPUu has time to get the next value
   }
   gyro_z /= num_readings; //calc the average
   gyro_offset = gyro_z; //store in the global offset variable
-  gyro_z_angle = 0;
+  gyro_z_angle = 0.0;
   unsigned long t_now_reset = millis();
   set_last_read_data_gyro(t_now_reset, gyro_z_angle);
 

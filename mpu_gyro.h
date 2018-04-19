@@ -9,7 +9,7 @@ class MPU {
     public:
         MPU();
         void mpu_setup();
-        void get_angle(float * angle);
+        float get_angle();
         void get_angular_velocity(float * angular_velocity);
         void get_x_accel(float * x_accel);
         void get_y_accel(float * y_accel);
@@ -30,6 +30,7 @@ class MPU {
         unsigned long last_read_time_gyro; //to help compute the time over which the integrationg is calculated
         unsigned long last_read_time_vel_x;
         unsigned long last_read_time_vel_y;
+        float angle;
 
 };
 

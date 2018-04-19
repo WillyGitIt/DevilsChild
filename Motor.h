@@ -1,26 +1,29 @@
 #ifndef Motor_h
 #define Motor_h
 
+#include <Arduino.h>
+
+/* creating a motor class */
+
 class mclass{
   public:
     mclass();
     void SETUP();
-    void read_serial_command();
-    void disable_motors();
-    void enable_motors();
-    void stop();
-    void forward();
-    void reverse();
-    void ccw();
+    int showspeed_val(); //good
+    int showspeed_change(); //good
+    void writespeed_val(int a); //good
+    void writespeed_change(int b); //good
+    void disable_motors(); //good
+    void enable_motors(); //good
+    void stop(); //good
+    void forward(float get_angle, float get_X_velocity); //good
+    void motor_write(int speed_left_front, int speed_left_rear,int speed_right_rear, int speed_right_front); //good
+    void reverse(); //good
+//    void ccw();
     void cw();
-    void strafe_left();
-    void strafe_right();
-    int showspeed_val();
-    int showspeed_change();
-    void writespeed_val(int a);
-    void writespeed_change(int b);
+    void strafe_left ();
 };
 
-extern mclass motor;
+extern mclass motor; //Can access class through 'motor' keyword.
 
 #endif

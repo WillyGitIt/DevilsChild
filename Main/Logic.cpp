@@ -4,9 +4,21 @@
 #include "Ultrasonic_Sensor.h"
 #include "IR_Sensor.h"
 
+void Sensors_Setup()
+{
+  //------Setup for IR------//
+  IR_Sensor IR_FL(IR_Type_FL,IR_forward_left_PIN);
+  IR_Sensor IR_FR(IR_Type_FR,IR_forward_right_PIN);
+  IR_Sensor IR_L(IR_Type_L,IR_left_PIN);
+  IR_Sensor IR_R(IR_Type_R,IR_right_PIN);
+
+  //------Setup for US------//
+  Ultrasonic_Sensor MyEyes(SPINNYTHING_PIN, TRIG_PIN, ECHO_PIN, US_MinRange, US_MaxRange);
+}
+
 bool WallDetect()   // a fuction to check if there is a wall infront
 {
-  int mid_dis = USmeasure(90);
+  int mid_dis = MyEyes.USmeasure(90);
   float left_dis = IR_FL.distance();
   float right_dis = IR_FR.distance();
   float reference_mid = (left_dis + right_dis) / 2;
@@ -44,7 +56,8 @@ bool ObstacleDetect(int clearDistance)
   unsigned int clearAngle;
   float safeDistance;
   float pi = 3.1415926;
-  
+  float ScanData =  MyEyes.getFrontScan();
+
   for (unsigned int i = 0; i <= 180; i++){
 
      float radian = i / 180 *pi;
@@ -54,7 +67,7 @@ bool ObstacleDetect(int clearDistance)
       safeDistance = clearDistance;
      }
      
-     if (FrontScan[i] < safeDistance){
+     if (ScanData[i] < safeDistance){
       clearanceCount++;
      }else{
       clearanceCount = 0;

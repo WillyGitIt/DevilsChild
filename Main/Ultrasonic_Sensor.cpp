@@ -4,15 +4,13 @@
 #include <Servo.h>
 #include "Settings.h"
 
-
-
-void US_setup(){
+Ultrasonic_Sensor::Ultrasonic_Sensor(int ServoPin, int TrigPin, int EchoPin, int MinRange, int MaxRange){
     Servo spinnything; 
-    spinnything.attach(SPINNYTHING_PIN); 
-    HCSR04 UltrasonicSensor(TRIG_PIN, ECHO_PIN, US_MinRange, US_MaxRange);
+    spinnything.attach(ServoPin); 
+    HCSR04 UltrasonicSensor(TrigPin, EchoPin, MinRange, MaxRange);
 }
 
-void UltraSonicScan () {
+void Ultrasonic_Sensor::UltraSonicScan () {
   unsigned int degree = spinnything.read();
   
   if (degree <= 90) {
@@ -39,14 +37,17 @@ void UltraSonicScan () {
   }
 }
 
-int USmeasure(unsigned int degree)
+int Ultrasonic_Sensor::USmeasure(unsigned int degree)
 {
   spinnything.write(degree);
   delay(200);
   return UltrasonicSensor.distanceInMillimeters();
 }
 
-
+float Ultrasonic_Sensor::getFrontScan()
+{
+  return FrontScan;
+}
 
 
 /*

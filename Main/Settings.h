@@ -19,6 +19,11 @@
 #define IR_left_PIN 00
 #define IR_right_PIN 00
 
+#define IR_Type_FL 00
+#define IR_Type_FR 00
+#define IR_Type_L 00
+#define IR_Type_R 00
+
 //------- Navigation Settings ----------//
 #define Straight_Wall_Tolerance 3
 

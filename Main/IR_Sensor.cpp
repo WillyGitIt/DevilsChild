@@ -16,11 +16,7 @@ typedef enum {
 //  SHARP_YA //2Y0A02 - LONG
 } SHARP;
 
-IR_Sensor::IR_Sensor(){
-}
-
-void IR_Sensor::SETUP(SHARP type, int pin)
-{
+IR_Sensor::IR_Sensor(SHARP type, int pin){
   SensorType = type;
   Sensorpin = pin;
 }

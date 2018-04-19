@@ -7,12 +7,11 @@ using namespace std;
 class IR_Sensor
 {
   public:
-    IR_Sensor();
-    void SETUP(SHARP type, int pin); //this function set up a IR sensor, inputs are sensor type and the pin it connected to.
-    float distance(); //this function returns the distance in mm
+    IR_Sensor(SHARP type, int pin);   //contructor assigns IR sensor type and pin 
+    float distance();                 //this function returns the distance in mm
 
   private:
-    SHARP SensorType;
+    SHARP SensorType;     
     unsigned int SensorPin;
 }
 

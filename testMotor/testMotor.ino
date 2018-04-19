@@ -72,7 +72,7 @@ void loop() {
       motor.cw();
     }
     motor.stop();
-    delay(500);
+    delay(500); //the delay is necessary for the MPU to recompose itself
     corner = 0;
     mpu.reset_angle_reading();
    

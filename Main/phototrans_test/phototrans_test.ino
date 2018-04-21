@@ -3,7 +3,7 @@
 Phototrans Phototrans;
 
 void setup() {
-  Phototrans.setup(15, 14, 5, 4, 0.2);
+  Phototrans.setup(5, 14, 15, 4, 0.3);
   Serial.begin(9600); // sets the serial port to 9600
 }
 

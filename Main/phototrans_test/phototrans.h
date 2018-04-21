@@ -6,7 +6,7 @@
 class Phototrans {
     public:
       Phototrans();
-        void setup(int pinf5, int pinf3, int pinb5, int pinb3, float alpha);
+        void setup(int pinf5, int pinf3, int pinb5, int pinb3, float alphaInput);
         bool isFire(); 
     private:
         float avgtf5;

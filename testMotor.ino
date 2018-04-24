@@ -12,6 +12,7 @@ MPU mpu;
 
 int corner = 1;
 float angle_reading;
+float x_vel;
 bool turnt = false;
 
 void setup() {
@@ -39,14 +40,13 @@ void loop() {
   motor.forward(0,-2);
   delay(3000);*/
 
-  /*//testing robot to go in straight line realigning with mpu feedback
+  /*//testing robot to go in straight line realigning with mpu angle feedback
   angle_reading = mpu.get_angle();
   Serial.print("Angle: ");
   Serial.println(angle_reading);
   motor.forward(angle_reading,0);*/
 
   /*//testing of robot to turn for 90 degrees then go straight again with new angle
-  //currently it doesn't align itself, I DON"T KNOW WHYYYYY
   if (corner == 1){
     
     mpu.get_angle(&angle_reading);
@@ -113,12 +113,19 @@ void loop() {
       turnt = false;
   }*/
 
-  //Testing shiting the robot right and left
+  /*//Testing shiting the robot right and left
   motor.shift_left();
-  delay(5000);
+  delay(2000);
 
   motor.shift_right();
-  delay(5000);
+  delay(2000);*/
 
-  //To do: test shift in x-direction realignment
+  //testing robot to go in straight line with mpu drift feedback
+  x_vel = mpu.get_x_vel();
+  Serial.print("X Velocity: ");
+  Serial.println(x_vel);
+  motor.forward(0,x_vel);
+
+  //To do: test drift and angle combined
+
 }

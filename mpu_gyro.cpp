@@ -34,7 +34,6 @@ void MPU::set_last_read_data_vel_y(unsigned long time, float vel_y) {
 }
 
 void MPU::mpu_setup() {
-  //FaBo9Axis fabo_9axis;
   //Serial.begin(9600);                   //Sets the data rate in bits per second (baud) for serial data transmission
   
   if (fabo_9axis.begin()) {
@@ -44,13 +43,7 @@ void MPU::mpu_setup() {
     while(1);
   }
 
-  //calibration for the gyroscope and accelerometer
-/*  float gyro_z = 0;
-  float accel_x = 0;
-  float accel_y = 0;
-  float ax,ay,az;
-  float gx,gy,gz;  */
-    
+  //calibration for the gyroscope and accelerometer    
   for (int i = 0; i < num_readings; i++) {  //read in the first 50 values from the MPu and average them 
   //  float cgx,cgy,cgz;
     fabo_9axis.readGyroXYZ(&cgx,&cgy,&cgz);
@@ -72,8 +65,6 @@ void MPU::mpu_setup() {
 
 float MPU::get_angle() {
   unsigned long t_now = millis(); //stores the time the readings were taken  
-  //FaBo9Axis fabo_9axis;
-  //float gx,gy,gz;  
   //read in the values  
   fabo_9axis.readGyroXYZ(&gx,&gy,&gz);
   
@@ -88,45 +79,38 @@ float MPU::get_angle() {
 
 }
 
-void MPU::get_angular_velocity(float * angular_velocity) {
-  //FaBo9Axis fabo_9axis;
-  //float gx,gy,gz;  
-  fabo_9axis.readGyroXYZ(&gx,&gy,&gz); 
-  *angular_velocity = gz;
+float MPU::get_angular_velocity() {
+   fabo_9axis.readGyroXYZ(&gx,&gy,&gz); 
+   return gz;
 }
 
-void MPU::get_x_accel(float * x_accel) {
-  //FaBo9Axis fabo_9axis;
- // float ax,ay,az;
+float MPU::get_x_accel() {
   fabo_9axis.readAccelXYZ(&ax,&ay,&az);
-  *x_accel = ax;
+  return ax;
 }
 
-void MPU::get_y_accel(float * y_accel) {
-  //FaBo9Axis fabo_9axis;
-   // float ax,ay,az;
+float MPU::get_y_accel() {
   fabo_9axis.readAccelXYZ(&ax,&ay,&az);
-  *y_accel = ay;
+  return ay;
 }
 
-void MPU::get_x_vel(float * x_vel) {
+float MPU::get_x_vel() {
   unsigned long t_now_x_vel = millis(); //stores the time the readings were taken  
-  //FaBo9Axis fabo_9axis;
- // float ax,ay,az;
+
   //read in the values
   fabo_9axis.readAccelXYZ(&ax,&ay,&az);
   
   float accel_corrected_x = ax - accel_offset_x;
   float dt = (t_now_x_vel - last_read_time_vel_x)/1000.0; //calculates the time since the last reading, in seconds
   velocity_x = accel_corrected_x*dt + velocity_x;
-
-  *x_vel = velocity_x;
+  
   set_last_read_data_vel_x(t_now_x_vel, velocity_x);
+  return velocity_x;
+
 }
-void MPU::get_y_vel(float * y_vel) {
+float MPU::get_y_vel() {
   unsigned long t_now_y_vel = millis(); //stores the time the readings were taken  
-  //FaBo9Axis fabo_9axis;
-  //float ax,ay,az;
+
   //read in the values
   fabo_9axis.readAccelXYZ(&ax,&ay,&az);
   
@@ -134,8 +118,8 @@ void MPU::get_y_vel(float * y_vel) {
   float dt = (t_now_y_vel - last_read_time_vel_y)/1000.0; //calculates the time since the last reading, in seconds
   velocity_y = accel_corrected_y*dt + velocity_y;
 
-  *y_vel = velocity_y;
   set_last_read_data_vel_y(t_now_y_vel, velocity_y);
+  return velocity_y;
 }
 
 void MPU::reset_angle_reading() { //this function resets and recalibrates the angle

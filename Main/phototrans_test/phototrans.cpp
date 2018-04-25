@@ -41,7 +41,7 @@ bool Phototrans::isFire() {
     float percent_diff_t5 = 100.0*(avgtf5 - avgtb5)/((avgtf5 + avgtb5)/2);
     float percent_diff_t3 = 100.0*(avgtf3 - avgtb3)/((avgtf3 + avgtb3)/2);
 
-    if (abs(percent_diff_t5) >100 && abs(percent_diff_t3) >100) 
+    if (abs(percent_diff_t5) >80 && abs(percent_diff_t3) >80) 
     {
         isFire = true;
     } else 
@@ -49,15 +49,7 @@ bool Phototrans::isFire() {
         isFire = false;
     }
 
-    Serial.print(tf5); // prints the value read
-    Serial.print(", ");
-    Serial.print(tf3); // prints the value read
-    Serial.print(", ");
-    
-    Serial.print(tb5); // prints the value read
-    Serial.print(", ");
-    Serial.print(tb3); // prints the value read
-    Serial.print(", ");
+
 
     Serial.print(avgtf5); // prints the value read
     Serial.print(", ");

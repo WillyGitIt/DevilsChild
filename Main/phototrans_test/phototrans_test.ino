@@ -13,12 +13,12 @@ void loop() {
  
   if (Phototrans.isFire()) {
     Serial.println(" FIRE");
-    digitalWrite(34, LOW);  
+    digitalWrite(34, LOW);   
   } else {
     Serial.println(" no fire");
     digitalWrite(34, HIGH);  
   }
 
-  delay(500);  //delay the loop 500 ms 
+  delay(100);  //delay the loop 500 ms 
   
 }

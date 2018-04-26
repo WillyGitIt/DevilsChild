@@ -9,7 +9,7 @@ void Phototrans::setup(int pinf5Input, int pinf3Input, int pinb5Input, int pinb3
     avgtf3 = analogRead(pinf3); // read analog input pin 14 with the 3mm
 
     avgtb5 = analogRead(pinb5); // read analog input pin 5 with the 5mm
-    avgtb3 = analogRead(pinb3); // read analog input pin 4 with the 3mmsoyyr
+    avgtb3 = analogRead(pinb3); // read analog input pin 4 with the 3mm
 
     alpha = alphaInput;
 
@@ -17,6 +17,7 @@ void Phototrans::setup(int pinf5Input, int pinf3Input, int pinb5Input, int pinb3
     pinf3 = pinf3Input;
     pinb5 = pinb5Input;
     pinb3 = pinb3Input;
+
 }
 
 bool Phototrans::isFire() {
@@ -40,13 +41,14 @@ bool Phototrans::isFire() {
     float percent_diff_t5 = 100.0*(avgtf5 - avgtb5)/((avgtf5 + avgtb5)/2);
     float percent_diff_t3 = 100.0*(avgtf3 - avgtb3)/((avgtf3 + avgtb3)/2);
 
-    if (percent_diff_t5 >80 && percent_diff_t3 >80) 
+    if (abs(percent_diff_t5) >110 && abs(percent_diff_t3) >110) 
     {
         isFire = true;
     } else 
     {
         isFire = false;
     }
+
 
 
     Serial.print(avgtf5); // prints the value read

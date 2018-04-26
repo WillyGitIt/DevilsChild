@@ -34,7 +34,7 @@ void MPU::set_last_read_data_vel_y(unsigned long time, float vel_y) {
 }
 
 void MPU::mpu_setup() {
-  //Serial.begin(9600);                   //Sets the data rate in bits per second (baud) for serial data transmission
+  Serial.begin(9600);                   //Sets the data rate in bits per second (baud) for serial data transmission
   
   if (fabo_9axis.begin()) {
     // Serial.println("configured FaBo 9Axis I2C Brick");
@@ -69,6 +69,13 @@ float MPU::get_angle() {
   fabo_9axis.readGyroXYZ(&gx,&gy,&gz);
   
   float gyro_corrected = gz - gyro_offset;
+
+  //add in a band to remove "invalid" data i.e. very small angular velocity values present even when stationary that add in error when summed 
+  if ((gyro_corrected <0.5) && (gyro_corrected > -0.50)) {
+    gyro_corrected = 0.0;
+  }
+
+  
   float dt = (t_now - last_read_time_gyro)/1000.0; //calculates the time since the last reading, in seconds 
   gyro_z_angle = gyro_corrected*dt + gyro_z_angle;
   

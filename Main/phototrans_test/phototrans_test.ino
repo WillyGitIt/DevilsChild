@@ -12,10 +12,10 @@ void setup() {
 void loop() {
  
   if (Phototrans.isFire()) {
-    Serial.println(" FIRE");
+    Serial.println(", 1");
     digitalWrite(34, LOW);   
   } else {
-    Serial.println(" no fire");
+    Serial.println(", 0");
     digitalWrite(34, HIGH);  
   }
 

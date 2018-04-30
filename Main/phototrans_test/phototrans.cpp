@@ -41,7 +41,7 @@ bool Phototrans::isFire() {
     float percent_diff_t5 = 100.0*(avgtf5 - avgtb5)/((avgtf5 + avgtb5)/2);
     float percent_diff_t3 = 100.0*(avgtf3 - avgtb3)/((avgtf3 + avgtb3)/2);
 
-    if (percent_diff_t5 >110 && percent_diff_t3 >110) 
+    if ((percent_diff_t5 >165 && percent_diff_t3 >155) || (percent_diff_t5 >165 && percent_diff_t3 >165))
     {
         isFire = true;
     } else 

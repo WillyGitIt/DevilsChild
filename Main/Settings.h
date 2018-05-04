@@ -1,11 +1,17 @@
 #ifndef Settings_h
 #define Settings_h
 
+//------- Motor Settings ----------//
+#define Motor_LF_Pin 46; //control motor pins
+#define Motor_LR_Pin 47;
+#define Motor_RR_Pin 48;
+#define Motor_RF_Pin 49;
+
 //------- Fire Fighting Settings ----------//
 #define fanPIN 00           //pin number that attached to the fan control
 #define fanDELAY 2000       //amount of time that fan keeps running after fire is off in ms
 
-//------- UltrsSonic Settings ----------//
+//------- UltraSonic Settings ----------//
 #define TRIG_PIN 12         //pin number for TRIG pin on Ultrasonic sensor
 #define ECHO_PIN 13         //pin number for ECHO pin on Ultrasonic sensor
 #define SPINNYTHING_PIN 14  //pin number for data pin on small servo motor

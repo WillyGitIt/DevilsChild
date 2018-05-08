@@ -34,4 +34,7 @@ class MPU {
 
 };
 
+
+extern MPU mpu;
+
 #endif

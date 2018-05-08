@@ -147,12 +147,9 @@ void MPU::reset_angle_reading() { //this function resets and recalibrates the an
   gyro_z_angle = 0.0;
   unsigned long t_now_reset = millis();
   set_last_read_data_gyro(t_now_reset, gyro_z_angle);
-
-
 }
 
-
-
+MPU mpu = MPU();
 
 
 

@@ -1,9 +1,9 @@
 #include "IR_Sensor.h"
 
-  IR_Sensor s1(Short_2D120XF1Y,8);
-  IR_Sensor s2(Short_2D120XF1Z,9);
-  IR_Sensor s3(Medium_2Y0A21F06,10);
-  IR_Sensor s4(Medium_2Y0A21F44,11);
+  IR_Sensor front_left(Short_2D120XF1Y,8);
+  IR_Sensor front_right(Short_2D120XF1Z,9);
+  IR_Sensor side_front(Medium_2Y0A21F06,10);
+  IR_Sensor side_back(Medium_2Y0A21F44,11);
   
 void setup() {
   // put your setup code here, to run once
@@ -11,11 +11,10 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  //Serial.println(s1.distance());
-  //Serial.println(s2.distance());
-  //Serial.println(s3.distance());
-   Serial.println(s4.distance());
- Serial.println("=====================================");
+  Serial.println(front_left.distance());
+  Serial.println(front_right.distance());
+  Serial.println(side_front.distance());
+  Serial.println(side_back.distance());
+  //Serial.println("-------------------");
   delay(500);
 }

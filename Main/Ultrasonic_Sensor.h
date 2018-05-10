@@ -11,7 +11,12 @@ class Ultrasonic_Sensor
     float getFrontScan();                   //return FrontScan
     
   private:
+    unsigned int Servo_Pin;
+    unsigned int Trig_Pin;
+    unsigned int Echo_Pin;
+    unsigned int Min_Range;
+    unsigned int Max_Range;
     float FrontScan[180];                   //record distances of front 0-180 degrees, from left to right
-}
+};
 
 #endif

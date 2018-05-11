@@ -2,10 +2,10 @@
 #define Settings_h
 
 //------- Motor Settings ----------//
-#define Motor_LF_Pin 46; //control motor pins
-#define Motor_LR_Pin 47;
-#define Motor_RR_Pin 48;
-#define Motor_RF_Pin 49;
+#define Motor_LF_Pin 46 //control motor pins
+#define Motor_LR_Pin 47
+#define Motor_RR_Pin 50
+#define Motor_RF_Pin 51
 
 //------- Fire Fighting Settings ----------//
 #define fanPIN 00           //pin number that attached to the fan control
@@ -22,13 +22,13 @@
 //------- IR sensor Settings ----------//
 #define IR_forward_left_PIN 00
 #define IR_forward_right_PIN 00
-#define IR_side_front_PIN 00
-#define IR_side_back_PIN 00
+#define IR_left_PIN 00
+#define IR_right_PIN 00
 
 #define IR_Type_FL 00
 #define IR_Type_FR 00
-#define IR_Type_SF 00
-#define IR_Type_SB 00
+#define IR_Type_L 00
+#define IR_Type_R 00
 
 //------- Navigation Settings ----------//
 #define Straight_Wall_Tolerance 3

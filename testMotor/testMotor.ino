@@ -165,8 +165,8 @@ void loop() {
 //--------------------------------------------------------*/
 //mpu is incorporated into motor code.
 
-/*//testing of robot to go straight
-motor.forward();*/
+//testing of robot to go straight
+//motor.forward();
 
 //testing of robot to turn for 90 degrees then go straight again with new angle
   while (corner == 1){

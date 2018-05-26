@@ -6,33 +6,44 @@
 #include "Logic.h"
 
 STATE initialising() {
-  //Do some initialising
-  Serial1.println("INITIALISING....");
-  delay(1000); //One second delay to see the serial string "INITIALISING...."
-  Serial1.println("Enabling Motors...");
-  Homing();
-  return RUNNING;
+  if (is_battery_voltage__not_OK){
+    comms_print("<Initialisation Failed: Low Battery>");
+    return STOPPED;
+  } else {
+    comms_print("<Initialising...>");
+    ledSETUP();
+    motor.SETUP();
+    motor.enable_motors();
+    mpu.mpu_setup();
+    Homing();
+    delay(2000);
+    comms_print("<Initialisation Finsihed, Entering Spiraling State...>");
+    return SPIRALING;
+  }
 }
 
-STATE running() {
-  move_it();   //
-  ObstacleDetect();
-  Navigate();
-
-  fast_flash_double_LED_builtin();
-  //range_and_speed_settings();
-  if (is_battery_voltage__not_OK())    return STOPPED;
-  return RUNNING;
+STATE spiraling() {
+  if (is_battery_voltage__not_OK){
+    comms_print("<Spiraling State Entering Failed: Low Battery>");
+    return STOPPED;
+  } else {
+    comms_print("<Spiraling State Entered>");
+    //Enter the code for spiraling here !!!!!!!!!!!!!!!!!!!!//
+  }
 }
 
-STATE fire()  {
-  //detect fire
-  //if yes, fan on
-  //if no, fan off return RUNNING
-  //return FIRE;
+STATE avoidance()  {
+   if (is_battery_voltage__not_OK){
+    comms_print("<Avoidance State Entering Failed: Low Battery>");
+    return STOPPED;
+  } else {
+    comms_print("<Spiraling State Entered>");
+    //Enter the code for avoidance here !!!!!!!!!!!!!!!!!!!!//
+  }
 }
 
 STATE stopped() {
+  comms_print("<Program Stopped>");
   static byte counter_lipo_voltage_ok;
   static unsigned long previous_millis;
 
@@ -54,6 +65,12 @@ STATE stopped() {
     }
   } else counter_lipo_voltage_ok = 0;
   return STOPPED;
+}
+
+void comms_print(char message)      //print message to both usb and bluetooth
+{
+  Serial.println(message);
+  Serial1.println(message); 
 }
 
 

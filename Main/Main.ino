@@ -2,24 +2,24 @@
 #include "FSM.h"
 #include "LED.h"
 #include <Servo.h>
+static STATE machine_state = INITIALISING;
 
 void setup() {
-  ledSETUP();
+  Serial.begin(9600);     //Oprn serial comms to USB 
   Serial1.begin(115200);  //Open serial comms to bluetooth module
 }
 
 void loop() {
-   static STATE machine_state = INITIALISING;
   //Finite-state machine Code
   switch (machine_state) {
     case INITIALISING:
       machine_state = initialising();
       break;
-    case RUNNING:
-      machine_state =  running();
+    case SPIRALING:
+      machine_state =  spiraling();
       break;
-    case FIRE:
-      machine_state = fire();
+    case AVOIDANCE:
+      machine_state = avoidance();
       break;
     case STOPPED:
       machine_state =  stopped();

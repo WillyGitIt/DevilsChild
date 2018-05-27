@@ -4,19 +4,13 @@
 #include <Servo.h>
 #include "Settings.h"
 
-Ultrasonic_Sensor::Ultrasonic_Sensor(){ 
-//    HCSR04 UltrasonicSensor(TrigPin, EchoPin, MinRange, MaxRange);
-    Servo_Pin = SPINNYTHING_PIN;
-    Trig_Pin = TRIG_PIN;
-    Echo_Pin = ECHO_PIN;
-    Min_Range = US_MinRange;
-    Max_Range = US_MaxRange;
+Ultrasonic_Sensor::Ultrasonic_Sensor(int ServoPin, int TrigPin, int EchoPin, int MinRange, int MaxRange){
+    Servo spinnything; 
+    spinnything.attach(ServoPin); 
+    HCSR04 UltrasonicSensor(TrigPin, EchoPin, MinRange, MaxRange);
 }
 
 void Ultrasonic_Sensor::UltraSonicScan () {
-  Servo spinnything; 
-  spinnything.attach(Servo_Pin); 
-  HCSR04 UltrasonicSensor(Trig_Pin, Echo_Pin, Min_Range, Max_Range);
   unsigned int degree = spinnything.read();
   
   if (degree <= 90) {
@@ -27,7 +21,7 @@ void Ultrasonic_Sensor::UltraSonicScan () {
    for (unsigned int i = 0; i <= 180; i++){
       spinnything.write(i);
       delay(15);
-      FrontScan[i] = UltrasonicSensor.distanceInMillimeters() * 0.1;
+      FrontScan[i] = UltrasonicSensor.distanceInMillimeters();
    } 
    
   }else{ 
@@ -38,26 +32,21 @@ void Ultrasonic_Sensor::UltraSonicScan () {
     for (unsigned int i = 180; i >= 0; i--){
       spinnything.write(i);
       delay(15);
-      FrontScan[i] = UltrasonicSensor.distanceInMillimeters() * 0.1;
+      FrontScan[i] = UltrasonicSensor.distanceInMillimeters();
     }
   }
-  spinnything.detach(); 
 }
 
 int Ultrasonic_Sensor::USmeasure(unsigned int degree)
 {
-  Servo spinnything; 
-  HCSR04 UltrasonicSensor(Trig_Pin, Echo_Pin, Min_Range, Max_Range);
-  spinnything.attach(Servo_Pin); 
   spinnything.write(degree);
-  delay(100);
-  spinnything.detach();
-  return UltrasonicSensor.distanceInMillimeters() * 0.1;
+  delay(200);
+  return UltrasonicSensor.distanceInMillimeters();
 }
 
 float Ultrasonic_Sensor::getFrontScan()
 {
-  //return FrontScan;
+  return FrontScan;
 }
 
 

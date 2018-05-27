@@ -5,19 +5,20 @@ enum STATE {
 
   INITIALISING,
 
-  SPIRALING,
+  RUNNING,
 
-  AVOIDANCE,
+  FIRE,
 
   STOPPED
 
 };
 
+
 STATE initialising();
 
-STATE spiraling();
+STATE running();
 
-STATE avoidance();
+STATE fire();
 
 STATE stopped();
 

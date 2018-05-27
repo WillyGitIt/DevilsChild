@@ -4,7 +4,6 @@
 using namespace std;
 
 #define averageTime  20
-//#define e 2.7182818284590
 
 typedef enum {
   Medium_2Y0A21F06,

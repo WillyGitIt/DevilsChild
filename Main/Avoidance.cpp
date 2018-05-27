@@ -4,6 +4,12 @@
 #include "IR_Sensor.h"
 #include "Settings.h"
 #include "Ultrasonic_Sensor.h"
+#include "phototrans.h"
+#include "Settings.h"
+
+//setting up a phototransistor object
+Phototrans Phototrans(alphaIn, front5photo, front3photo, back5photo, back3photo);
+
 
 bool obstacle(int sensor){
   unsigned int distance;
@@ -77,8 +83,12 @@ bool obstacle_foward(){
     if (!obstacle(0)){      //if 
       motor.forward();
       previous = current;
-    } else if (0) {     //detecting fire
+    } else if (Phototrans.isFire()) {     //detecting fire
       //fan on
+      digitalWrite(fanPIN, LOW);
+      if (!Phototrans.isFire()) {
+        digitalWrite(fanPIN, HIGH);  //fan off
+      }
       motor.stop();
     } else {            //a wall too close
       motor.stop();

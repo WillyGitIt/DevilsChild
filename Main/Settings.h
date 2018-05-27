@@ -8,8 +8,15 @@
 #define Motor_RF_Pin 51
 
 //------- Fire Fighting Settings ----------//
-#define fanPIN 00           //pin number that attached to the fan control
+#define fanPIN 34           //pin number that attached to the fan control
 #define fanDELAY 2000       //amount of time that fan keeps running after fire is off in ms
+
+//------- Phototransistor Settings ----------//
+#define front5photo 14
+#define front3photo 5
+#define back5photo 15
+#define back3photo 4
+#define alphaIn 0.2
 
 //------- UltraSonic Settings ----------//
 #define TRIG_PIN 11         //pin number for TRIG pin on Ultrasonic sensor
@@ -38,3 +45,5 @@
 #define obstacle_stopDistance     10      //how close the robot should stop infront of an abstacle (cm)
 #define obstacle_dectectDistance  15      //how close the obstacle needs to be infront of a sensor to count as a threat (cm)
 #endif
+
+

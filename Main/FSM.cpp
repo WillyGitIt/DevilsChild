@@ -29,6 +29,10 @@ STATE initialising() {
     homing();
     CornerCount = 0;
     Wall_Distance_AddOn = 0;
+    //sets up writing to the fan and turns the fan off
+    pinMode(fanPIN, OUTPUT);
+    digitalWrite(fanPIN, HIGH); 
+    
     delay(2000);
     comms_print("<Initialisation Finsihed, Entering Spiraling State...>");
     return SPIRALING;

@@ -15,11 +15,13 @@ class mclass{
     void forward(); //good
     void motor_write(int speed_left_front, int speed_left_rear,int speed_right_rear, int speed_right_front); //good
     void reverse(); //good
-    bool past_obsta_forward (unsigned long t_now);
-    bool ccw(int degree);
-    bool cw(int degree);
-    void shift_left ();
-    void shift_right ();
+    void ccw(int degree);
+    void cw(int degree);
+    void ccw();
+    void cw();
+    void shift_left();
+    void shift_right();
+    void wallAlign();
 };
 
 extern mclass motor; //Can access class through 'motor' keyword.

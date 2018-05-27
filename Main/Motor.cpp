@@ -5,11 +5,12 @@
 
 #include "Motor.h"
 #include <Arduino.h>
-#include "Settings_h"
+#include "Settings.h"
 #include <Wire.h>
 #include <FaBo9Axis_MPU9250.h>
 #include "mpu_gyro.h"
 #include <Servo.h> //Library that allows Arduino board to control the servo motors.
+#include "IR_Sensor.h"
 
 float angle_reading;
 float X_velocity;
@@ -23,6 +24,8 @@ int speed_left_front;
 int speed_left_rear;
 int speed_right_rear;
 int speed_right_front;
+
+bool hasTurned = false;
 
 int first_ang_reading = 1;
 float angle_reading_desired;
@@ -84,14 +87,14 @@ void mclass::stop() //Stop
     return;
 }
 
-void mclass::forward()
+void mclass::forward() // moves robot forward, closed loop transfer function included where robot re-adjusts based on mpu feedback.
 {
 /*     if (previous_motion != 'forward')
     {
         mpu.reset();
     }
 */
-    angle_reading = mpu.get_angle();
+    angle_reading = mpu.get_angle(); //gets current angle reading from mpu.
     X_velocity = mpu.get_x_vel(); //not sure if x-velocity even works
     
     //checking for angle rotation before drift since drift does not occur often (according to trials)
@@ -138,8 +141,8 @@ void mclass::forward()
         
     }
     
-    angle_reading = mpu.get_angle();
-    motor_write(speed_left_front,speed_left_rear,speed_right_rear,speed_right_front);
+    angle_reading = mpu.get_angle(); //trying to call this function often as it increases angle accuracy.
+    motor_write(speed_left_front,speed_left_rear,speed_right_rear,speed_right_front); //write the decided speeds onto the motor.
     return;
 
   //  previous_motion = 'forward';
@@ -183,100 +186,104 @@ void mclass::shift_right ()
 
 //this function will rotate the robot counter clockwise for an inputted amount of degrees.
 //this hasn't been tested completely
-bool mclass::ccw (int degree)
+void mclass::ccw (int degree)
 {
-    //pid controller
-    angle_reading = mpu.get_angle();
-    err = angle_reading - degree;
-    
-    if (err < 0.5) {
-       
-       stop();
-       delay(500); // the delay is necessary for the MPU to like compose itself. Otherwise the angle readings don't work.
-       mpu.reset_angle_reading();
-       return true;
-       
-    } else {
-
-       p_speed = min(err * kp, 200);
-       
-       //integral = (err * t_diff) + integral;
-       //i_speed = integral*ki;
-       
-       control_speed = p_speed;
+    while (hasTurned == false){ //keeps going through closed loop feedback system until specified angle has been successfully completed.
+      //pid controller
+      angle_reading = mpu.get_angle();
+      err = angle_reading - degree;
+      
+      if (err < 0.5) {
+         
+         stop();
+         delay(500); // the delay is necessary for the MPU to like compose itself. Otherwise the angle readings don't work.
+         mpu.reset_angle_reading();
+         hasTurned = true; // specified turn is completed.
+         
+      } else {
+  
+         p_speed = min(err * kp, 200);
+         
+         //integral = (err * t_diff) + integral;
+         //i_speed = integral*ki;
+         
+         control_speed = p_speed;
+          
+         speed_left_front = 1400 - (control_speed);
+         speed_left_rear = 1400 - (control_speed);
+         speed_right_rear = 1400 - (control_speed);
+         speed_right_front = 1400 - (control_speed);
+         
+         angle_reading = mpu.get_angle();
+         motor_write(speed_left_front,speed_left_rear,speed_right_rear,speed_right_front);
         
-       speed_left_front = 1400 - (control_speed);
-       speed_left_rear = 1400 - (control_speed);
-       speed_right_rear = 1400 - (control_speed);
-       speed_right_front = 1400 - (control_speed);
-       
-       angle_reading = mpu.get_angle();
-       motor_write(speed_left_front,speed_left_rear,speed_right_rear,speed_right_front);
-       
-       return false;
+      }
     }
+    hasTurned = false; //ready for next turn
 }
 
 //this function will rotate the robot clockwise for an inputted amount of degrees.
-bool mclass::cw (int degree)
+void mclass::cw (int degree)
 {
-    //pid controller
-    angle_reading = mpu.get_angle();
-    err = angle_reading + degree;
-    
-    if (err < 0.5) {
-       
-       stop();
-       delay(500); // the delay is necessary for the MPU to like compose itself. Otherwise the angle readings don't work.
-       mpu.reset_angle_reading();
-       
-       return true;
-       
-    } else {
-
-       p_speed = min(err * kp, 200);
-       
-       //integral = (err * t_diff) + integral;
-       //i_speed = integral*ki;
-       
-       control_speed = p_speed;
-        
-       speed_left_front = 1600 + (control_speed);
-       speed_left_rear = 1600 + (control_speed);
-       speed_right_rear = 1600 + (control_speed);
-       speed_right_front = 1600 + (control_speed);
-
-       angle_reading = mpu.get_angle();
-       motor_write(speed_left_front,speed_left_rear,speed_right_rear,speed_right_front);
-       
-       return false;
+    while (hasTurned == false){ //keeps going through closed loop feedback system until specified angle has been successfully completed.
+      
+      //pid controller
+      angle_reading = mpu.get_angle();
+      err = angle_reading + degree;
+      
+      if (err < 0.5) {
+         
+         stop();
+         delay(500); // the delay is necessary for the MPU to like compose itself. Otherwise the angle readings don't work.
+         mpu.reset_angle_reading();
+         hasTurned = true; // specified turn is completed.
+         
+      } else {
+  
+         p_speed = min(err * kp, 200);
+         
+         //integral = (err * t_diff) + integral;
+         //i_speed = integral*ki;
+         
+         control_speed = p_speed;
+          
+         speed_left_front = 1600 + (control_speed);
+         speed_left_rear = 1600 + (control_speed);
+         speed_right_rear = 1600 + (control_speed);
+         speed_right_front = 1600 + (control_speed);
+  
+         angle_reading = mpu.get_angle();
+         motor_write(speed_left_front,speed_left_rear,speed_right_rear,speed_right_front);
+      }
     }
+    
+    hasTurned = false; //ready for next turn
 }
 
-//this function will move the robot forwards until it's past the obstacle
-bool mclass::past_obsta_forward (unsigned long t_now)
-{
-    if (first_time_reading == 1) {    
-       t_desired = t_now + 1500;
-       first_time_reading = 0;
-       
-       speed_left_front = 1700;
-       speed_left_rear = 1700;
-       speed_right_rear = 1300;
-       speed_right_front = 1300;
-       
-       motor_write(speed_left_front,speed_left_rear,speed_right_rear,speed_right_front);
-       
-       return false;
-       
-    } else if (t_now >= t_desired) {
-       first_time_reading = 1;
+void mclass::ccw() {
+  motor_write(1400,1400,1400,1400);
+  return;
+}
 
-       stop();
-       delay(500); // the delay is necessary for the MPU to like compose itself. Otherwise the angle readings don't work.
-       
-       return true;
+void mclass::cw() {
+  motor_write(1600,1600,1600,1600);
+  return;
+}
+
+IR_Sensor Front_IR(IR_Type_SF, IR_SF_PIN);
+IR_Sensor Back_IR(IR_Type_SB, IR_SB_PIN);
+
+void mclass::wallAlign(){
+  
+  while (abs(Front_IR.distance() - Back_IR.distance()) > 8) {
+    if (Front_IR.distance() > Back_IR.distance()) {
+      ccw();
+    } else {
+      cw();
     }
+  }
+  stop();
+  return;
 }
 
 // This writes to the motors the speed of acceleration.

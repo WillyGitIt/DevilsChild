@@ -8,7 +8,10 @@ bool wallDetect();          //detect if there is a Wall infront, return true if 
 void homing();              //use at the beginning of the program, to go close and parallel to a wall
 bool obstacleDetect();//int clearDistance); //detect if there is an obstacle infront within a given distance "clearDistance", returns true if there isan obstacle
 void obstacleAvoid();
-void navigate();            //decide the next postition to go and execute and movements 
+void shiftRightAvoid(float objDist);
+void forwardAvoid();
+void shiftLeftAvoid(float wallDist);
+void spiral();            //decide the next postition to go and execute and movements 
 void mapping();             //to be decided 
 
 #endif

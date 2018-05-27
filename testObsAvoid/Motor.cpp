@@ -260,6 +260,32 @@ void mclass::cw (int degree)
     hasTurned = false; //ready for next turn
 }
 
+void mclass::ccw() {
+  motor_write(1400,1400,1400,1400);
+  return;
+}
+
+void mclass::cw() {
+  motor_write(1600,1600,1600,1600);
+  return;
+}
+
+IR_Sensor Front_IR(IR_Type_SF, IR_SF_PIN);
+IR_Sensor Back_IR(IR_Type_SB, IR_SB_PIN);
+
+void mclass::wallAlign(){
+  
+  while (abs(Front_IR.distance() - Back_IR.distance()) > 8) {
+    if (Front_IR.distance() > Back_IR.distance()) {
+      ccw();
+    } else {
+      cw();
+    }
+  }
+  stop();
+  return;
+}
+
 // This writes to the motors the speed of acceleration.
 void mclass::motor_write(int speed_left_front, int speed_left_rear,int speed_right_rear, int speed_right_front){
 

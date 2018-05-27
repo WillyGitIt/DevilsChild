@@ -17,8 +17,11 @@ class mclass{
     void reverse(); //good
     void ccw(int degree);
     void cw(int degree);
+    void ccw();
+    void cw();
     void shift_left();
     void shift_right();
+    void wallAlign();
 };
 
 extern mclass motor; //Can access class through 'motor' keyword.

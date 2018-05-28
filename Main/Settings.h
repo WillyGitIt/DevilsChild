@@ -42,8 +42,8 @@
 
 
 //------- Obtacle detection Settings ----------//
-#define obstacle_stopDistance     10      //how close the robot should stop infront of an abstacle (cm)
-#define obstacle_dectectDistance  15      //how close the obstacle needs to be infront of a sensor to count as a threat (cm)
+#define obstacle_stopDistance     5      //how close the robot should stop infront of an abstacle (cm)
+#define obstacle_dectectDistance  10      //how close the obstacle needs to be infront of a sensor to count as a threat (cm)
 #endif
 
 

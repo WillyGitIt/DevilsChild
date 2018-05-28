@@ -58,16 +58,21 @@ STATE spiraling() {
       comms_print("<Wall Detected, Advancing to Wall...>");
       Ultrasonic_Sensor Ultra;
 
-      //check left and right, if equal-ish, then program is finsihed
-      if (abs(Ultra.USmeasure(0) - Ultra.USmeasure(180)) < 10){
-        return STOPPED;
-      }
-
       //get closer to the wall
       while(obstacle(3) > (Wall_Distance + Wall_Distance_AddOn)){
         motor.forward();
       }
       motor.stop();
+
+      //check left and right, if equal-ish, then program is finsihed
+      int leftD = Ultra.USmeasure(0);
+      delay(500);
+      int rightD = Ultra.USmeasure(90);    
+      if (abs(leftD - rightD) < 10){
+        Serial.println(leftD,rightD);
+        return STOPPED;
+      }
+      
       comms_print("<Wall Reached, Turning...>");
       
       //do a right turn

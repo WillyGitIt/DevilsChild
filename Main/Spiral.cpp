@@ -16,6 +16,8 @@ bool wallDetect()   //checks if there is a wall infront of the robot, true if th
   float right_dis = IR_FR.distance();
   
   float reference_mid = (left_dis + right_dis) * 0.5;
+  Serial.print("difference: ");
+  Serial.println(mid_dis - reference_mid);
   if (abs(mid_dis - reference_mid) < 4){
     return true;
   }else{

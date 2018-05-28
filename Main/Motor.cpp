@@ -303,7 +303,7 @@ void mclass::ccw(){
 void mclass::WallAlign(){
   IR_Sensor Front_IR(IR_Type_SF, IR_side_front_PIN);
   IR_Sensor Back_IR(IR_Type_SB, IR_side_back_PIN);
-  while (abs(Front_IR.distance() - Back_IR.distance()) > 1){
+  while (abs(Front_IR.distance() - Back_IR.distance()) > 0.4){
     if(Front_IR.distance() > Back_IR.distance()){
       ccw();
     }else{

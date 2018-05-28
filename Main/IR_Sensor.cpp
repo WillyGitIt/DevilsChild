@@ -11,65 +11,65 @@ IR_Sensor::IR_Sensor(SHARP type, unsigned int pin){
     Sensorpin = pin;
 }
 
+float temp;
+float dis_mm;  //distance in mm
 float IR_Sensor::distance()
 {
-  float temp;
   for (unsigned int i = 0; i < 50; i++){
     temp += analogRead(Sensorpin);
     delay(1);
   }
-  temp = temp / 50;
+ 
+  temp = temp * 0.02;
   
   float dis_mm;  //distance in mm
     switch(SensorType){
-        case Short_2D120XF1Y: {
-          dis_mm = temp;
-            //Serial.println("case 1");
-          if (temp < 146) {
-            dis_mm = -27.15 * log(temp) + 139.09;
-          }
-          else if (temp < 212){
-            dis_mm = -0.0758 * temp + 16.06;
-          }
+        case Short_2D120XF1Y: { //front left
+          //dis_mm = temp;
+          if (temp < 54) {
+            dis_mm = 30;      
+          }else if (temp < 142) {
+            dis_mm = -25.55 * log(temp) + 130;
+          } else {
+            dis_mm = 0;
+           }
         } break;    
           
-        case Short_2D120XF1Z: {
-            //Serial.println("case 2");
-           if (temp < 91 ) {
-            dis_mm =  -20.67 * log(temp) + 103.22;
-           } else if (temp < 176) {
-            dis_mm = -0.117 * (temp) + 20.403;            
+        case Short_2D120XF1Z: { //front right
+          //dis_mm = temp;
+           if (temp < 42) {
+            dis_mm = 30;      
+          }else if (temp < 142 ) {
+            dis_mm =  -23.7 * log(temp) + 117.89;        
            } else {
             dis_mm = 0;
            }
         } break;
           
-        case Medium_2Y0A21F06:  {
-          //dis_mm = temp;     
-          if (temp < 176)  {
-            dis_mm = -44.68 * log(temp) + 243.38;
-          } else if (temp < 311) {  
-            dis_mm = -0.109 * temp + 33.277;
+        case Medium_2Y0A21F06:  {   //side front
+          //dis_mm = temp;
+          if (temp < 50) {
+            dis_mm = 60;      
+          }else if (temp < 224)  {
+            dis_mm = 108.25*exp(-0.014*temp);
           } else {
             dis_mm = 0;
           }      
-        
-          //Serial.print("case 3 ");    //for debugging
-          } break;
+        } break;
           
-        case Medium_2Y0A21F44: {
+        case Medium_2Y0A21F44: {    //side back
           //dis_mm = temp;
-          if (temp < 171) {
-            dis_mm = -39.57 * log(temp) + 209.02;
-          } else if (temp < 290) {  
-            dis_mm = -0.1142 * temp + 30.308;
+          if (temp < 50) {
+            dis_mm = 60;      
+          }else if (temp < 224)  {
+            dis_mm = 107.42*exp(-0.015*temp);
           } else {
             dis_mm = 0;
-          }
-          //Serial.print("case 4 ");    //for debugging
+          } 
         } break;
       }
-
+  Serial.print("IR: ");
+  Serial.println(dis_mm);
   return dis_mm;
 
 }

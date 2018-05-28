@@ -2,6 +2,7 @@
 #include "Initial.h"
 #include <Arduino.h>
 #include "IR_Sensor.h"
+#include "Settings.h"
 
 void homing() //find a wall to go to it, then align with the wall
 {
